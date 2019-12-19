@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const UpdateMovie = () => {
+const UpdateMovie = (props) => {
     const initialMovie = {
         title: '',
         director: '',
@@ -9,6 +9,16 @@ const UpdateMovie = () => {
     }
 
     const [movie, setMovie] = useState(initialMovie);
+    
+    useEffect(() => {
+        const movieToEdit = props.movies.find(
+            e => `${e.id}` === props.match.params.id
+        );
+        console.log(props.movies, movieToEdit);
+        if (movieToEdit) {
+            setMovie(movieToEdit)
+        }
+    }, [props.movies, props.match.params.id])
 
     const changeHandler = e => {
         setMovie({
