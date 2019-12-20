@@ -37,6 +37,7 @@ const UpdateMovie = (props) => {
             console.log('Put request',res.data)
             props.updateMovies([...props.movies,
                 res.data])
+            props.history.push('/');
         })
         
         .catch(err => console.log('Data returned an error', err));
