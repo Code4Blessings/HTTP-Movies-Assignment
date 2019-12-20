@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const UpdateMovie = (props) => {
     const initialMovie = {
+        //id: '',
         title: '',
         director: '',
         metascore: '',
@@ -22,14 +24,28 @@ const UpdateMovie = (props) => {
 
     const changeHandler = e => {
         setMovie({
+            ...movie,
             [e.target.name]: e.target.value
         })
+    }
+
+    const submitHandler = (e) => {
+        e.preventDefault();
+        
+        axios.put(`http://localhost:5000/api/movies/${movie.id}`, movie)
+        .then(res => {
+            console.log('Put request',res.data)
+            props.updateMovies([...props.movies,
+                res.data])
+        })
+        
+        .catch(err => console.log('Data returned an error', err));
     }
 
     return (
         <div>
           <h2>Update Movie</h2>  
-          <form>
+          <form onSubmit={submitHandler} >
             <input 
             type="text"
             name="title"
@@ -57,7 +73,9 @@ const UpdateMovie = (props) => {
             placeholder="name of stars" 
             onChange={changeHandler} 
             value={movie.stars} />
+            <button>Update Movie</button>
           </form>
+          {console.log(`Bottom of form ${props.movies}`)}
         </div>
     );
 };
